@@ -1,5 +1,4 @@
 import React from 'react';
-import mockProfiles from '../profiles.json';
 
 export const ProfileContext = React.createContext({
   profiles: [],
@@ -11,12 +10,12 @@ function ProfilesReducer(state, action) {
   switch (action.type) {
     case 'ascending':
       profiles = [...state.profiles];
-      profiles.sort((profileA, profileB) => (profileA.handle > profileB.handle ? 1 : -1));
+      profiles.sort((profileA, profileB) => (profileA.name.first > profileB.name.first ? 1 : -1));
       return { profiles };
 
     case 'descending':
       profiles = [...state.profiles];
-      profiles.sort((profileA, profileB) => (profileA.handle < profileB.handle ? 1 : -1));
+      profiles.sort((profileA, profileB) => (profileA.name.first < profileB.name.first ? 1 : -1));
       return { profiles };
 
     default:
@@ -24,9 +23,9 @@ function ProfilesReducer(state, action) {
   }
 }
 
-function ProfilesContextProvider({ children }) {
+function ProfilesContextProvider({ children, profileData }) {
   const [state, dispatch] = React.useReducer(ProfilesReducer, {
-    profiles: mockProfiles,
+    profiles: profileData,
   });
 
   return (

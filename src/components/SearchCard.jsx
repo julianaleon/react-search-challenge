@@ -28,7 +28,14 @@ export default class Search extends React.PureComponent {
           }}
         >
           <div style={styles.avatar}>
-          <img src={photoUrl} alt="potential date"></img>
+            <img
+              style={{
+                height: '200px',
+                width: '200px',
+              }}
+              src={photoUrl}
+              alt="potential date"
+            />
             <div
               style={{
                 position: 'absolute',
