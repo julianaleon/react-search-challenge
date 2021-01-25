@@ -3,6 +3,8 @@ import { ProfileContext } from './ProfilesContextProvider';
 import MinimalButton from './MinimalButton';
 import Header from './Header';
 import SearchCard from './SearchCard';
+import Switch from '@material-ui/core/Switch';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 class SearchPage extends React.Component {
   static contextType = ProfileContext;
@@ -15,15 +17,31 @@ class SearchPage extends React.Component {
     this.context.dispatch({ type: 'descending' });
   };
 
+  handleToggleRefresh = (event) => {
+    this.props.toggleRefresh(event.target.checked);
+  };
+
   render() {
+    const { autoRefresh, timer } = this.props;
     const { profiles = [] } = this.context;
 
     return (
       <React.Fragment>
-        <Header />
+        <Header autoRefresh={autoRefresh} timer={timer} />
 
         <main style={{ margin: 24 }}>
           <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={autoRefresh}
+                  onChange={this.handleToggleRefresh}
+                  color="primary"
+                  name="refreshSwitch"
+                />
+              }
+              label="Auto Refresh"
+            />
             <MinimalButton disabled>
               <img src="filter.svg" width={22} alt="filter" />
             </MinimalButton>
