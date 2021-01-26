@@ -1,7 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import axios from 'axios';
 import SearchPage from './components/SearchPage';
 import ProfilesContextProvider from './components/ProfilesContextProvider';
+import ProfileDetails from './components/ProfileDetails';
 import useInterval from './hooks/useInterval';
 import './styles.css';
 
@@ -12,6 +14,7 @@ function App() {
   const [count, setCount] = useState(10);
   const [data, setData] = useState([]);
   const [status, setStatus] = useState('');
+  const [userProfile, setUserProfile] = useState({});
 
   const fetchData = async () => {
     setStatus('LOADING');
@@ -49,13 +52,31 @@ function App() {
     setCount(10); // Reset timer
   });
 
+  const handleOpenProfile = (profileData) => {
+    setUserProfile(profileData);
+  };
+
   return (
     <>
       {status === 'ERROR' && <div>{'Something went wrong ...'}</div>}
       {status === 'LOADING' && <div>{'Loading profiles ...'}</div>}
       {status === 'LOADED' && (
         <ProfilesContextProvider profileData={data}>
-          <SearchPage autoRefresh={autoRefresh} timer={count} toggleRefresh={handleRefreshState} />
+          <Router>
+            <Switch>
+              <Route path="/profile">
+                <ProfileDetails data={userProfile} />
+              </Route>
+              <Route path="/">
+                <SearchPage
+                  autoRefresh={autoRefresh}
+                  openProfile={handleOpenProfile}
+                  timer={count}
+                  toggleRefresh={handleRefreshState}
+                />
+              </Route>
+            </Switch>
+          </Router>
         </ProfilesContextProvider>
       )}
     </>

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const styles = {
   card: {
@@ -7,6 +8,7 @@ const styles = {
     alignItems: 'center',
   },
   avatar: {
+    cursor: 'pointer',
     position: 'relative',
     width: '200px',
     height: '200px',
@@ -15,7 +17,14 @@ const styles = {
 
 export default class Search extends React.PureComponent {
   render() {
-    const { photoUrl = '', handle = '', location = '', age = 99, photoCount = 0 } = this.props;
+    const {
+      photoUrl = '',
+      handle = '',
+      location = '',
+      age = 99,
+      photoCount = 0,
+      openProfile,
+    } = this.props;
 
     return (
       <div style={styles.card}>
@@ -27,76 +36,78 @@ export default class Search extends React.PureComponent {
             overflow: 'hidden',
           }}
         >
-          <div style={styles.avatar}>
-            <img
-              style={{
-                height: '200px',
-                width: '200px',
-              }}
-              src={photoUrl}
-              alt="potential date"
-            />
-            <div
-              style={{
-                position: 'absolute',
-                width: '100%',
-                bottom: '0',
-                borderRadius: 'inherit',
-                overflow: 'hidden',
-              }}
-            >
+          <Link to="/profile">
+            <div style={styles.avatar} onClick={openProfile}>
+              <img
+                style={{
+                  height: '200px',
+                  width: '200px',
+                }}
+                src={photoUrl}
+                alt="potential date"
+              />
               <div
                 style={{
-                  margin: 8,
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'flex-end',
-                  position: 'relative',
+                  position: 'absolute',
+                  width: '100%',
+                  bottom: '0',
+                  borderRadius: 'inherit',
+                  overflow: 'hidden',
                 }}
               >
                 <div
                   style={{
-                    color: 'white',
+                    margin: 8,
                     display: 'flex',
-                    flexDirection: 'column',
-                    width: '100%',
+                    justifyContent: 'space-between',
+                    alignItems: 'flex-end',
+                    position: 'relative',
                   }}
                 >
-                  <h6 style={{ fontSize: '16px ' }}>
-                    <div style={{ display: 'flex', marginBottom: '4px', alignItems: 'center' }}>
-                      {handle}
-                    </div>
-                  </h6>
                   <div
                     style={{
+                      color: 'white',
                       display: 'flex',
-                      justifyContent: 'space-between',
-                      alignItems: 'baseline',
+                      flexDirection: 'column',
+                      width: '100%',
                     }}
                   >
+                    <h6 style={{ fontSize: '16px ' }}>
+                      <div style={{ display: 'flex', marginBottom: '4px', alignItems: 'center' }}>
+                        {handle}
+                      </div>
+                    </h6>
                     <div
                       style={{
                         display: 'flex',
-                        marginBottom: '4px',
-                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        alignItems: 'baseline',
                       }}
                     >
-                      <span>{location ? `${age} • ${location}` : age}</span>
-                    </div>
-                    <div style={{ display: 'inline-block', height: '15px' }}>
-                      {photoCount > 1 && (
-                        <div>
-                          <div style={{ marginRight: '4px' }}>
-                            <span color="white">{photoCount}</span>
+                      <div
+                        style={{
+                          display: 'flex',
+                          marginBottom: '4px',
+                          alignItems: 'center',
+                        }}
+                      >
+                        <span>{location ? `${age} • ${location}` : age}</span>
+                      </div>
+                      <div style={{ display: 'inline-block', height: '15px' }}>
+                        {photoCount > 1 && (
+                          <div>
+                            <div style={{ marginRight: '4px' }}>
+                              <span color="white">{photoCount}</span>
+                            </div>
                           </div>
-                        </div>
-                      )}
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
+          </Link>
         </div>
       </div>
     );

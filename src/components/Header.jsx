@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 export default function Header({ autoRefresh, timer }) {
   return (
@@ -8,7 +9,9 @@ export default function Header({ autoRefresh, timer }) {
         padding: '16px',
       }}
     >
-      <img src="./logo.svg" alt="match" width="110" />
+      <Link to="/">
+        <img src="./logo.svg" alt="match logo" width="110" />
+      </Link>
       {autoRefresh && (
         <p
           style={{

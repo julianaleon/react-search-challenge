@@ -70,6 +70,7 @@ class SearchPage extends React.Component {
                 location={profile.location.city}
                 age={profile.dob.age}
                 photoCount={1}
+                openProfile={() => this.props.openProfile(profile)}
               />
             ))}
           </div>
