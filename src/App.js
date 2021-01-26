@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import axios from 'axios';
 import SearchPage from './components/SearchPage';
@@ -36,6 +36,8 @@ function App() {
   }, []);
 
   // 10 second timer used to refetch profiles data
+  // Note - This is currently causing the entire page to re-render
+  // and would need to be fixed in the next iteration.
   useInterval(
     () => {
       if (count > 0) {
@@ -49,15 +51,17 @@ function App() {
   );
 
   // Toggles the autoRefresh state to true/false based on the switch in the SearchPage
-  // If autoRefresh is false we stop the timer and reset the counter to 10 seconds
-  const handleRefreshState = useCallback((value) => {
+  // If autoRefresh is false we stop and reset the timer
+  const handleRefreshState = (value) => {
     setAutoRefresh(value);
     setCount(REFRESH_INTERVAL);
-  });
+  };
 
   // Sets the userProfile state based on the profile card that is clicked in the SearchPage
+  // Also pauses data from refetching while on the ProfileDetails page
   const handleOpenProfile = (profileData) => {
     setUserProfile(profileData);
+    setAutoRefresh(false);
   };
 
   return (
