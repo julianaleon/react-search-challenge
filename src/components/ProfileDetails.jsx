@@ -1,55 +1,64 @@
 import React from 'react';
 import Header from './Header';
+import styled from 'styled-components';
+
+const Img = styled.img`
+  height: 250px;
+  padding: 12px;
+  width: 250px;
+`;
+
+const ProfileContainer = styled.div`
+  border: 1px solid lightgray;
+  border-radius: 8px;
+  box-shadow: 0 3px 6px lightgray, 0 3px 6px;
+  margin: 40px 40px;
+  overflow: hidden;
+  position: relative;
+
+  @media (min-width: 1200px) {
+    margin: 40px auto;
+    width: 75%;
+  }
+`;
+
+const ProfileContent = styled.div`
+  display: inline-block;
+  padding: 8px 24px;
+  position: absolute;
+  top: 0;
+
+  @media (max-width: 800px) {
+    position: relative;
+  }
+`;
 
 class ProfileDetails extends React.Component {
   render() {
-    const { dob, location, name, picture } = this.props.data;
+    const { data } = this.props;
     const bioContent =
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc tristique feugiat enim eget elementum. Pellentesque vitae dolor est. Suspendisse eget enim mattis purus pellentesque maximus sed sed eros.';
 
     return (
       <>
         <Header />
-        {this.props.data.picture && (
-          <div
-            style={{
-              border: '1px solid lightgray',
-              borderRadius: '8px',
-              boxShadow: '0 3px 6px lightgray, 0 3px 6px',
-              margin: '40px 40px',
-              overflow: 'hidden',
-              position: 'relative',
-            }}
-          >
-            <img
-              style={{
-                height: '250px',
-                width: '250px',
-                padding: '12px',
-              }}
-              src={picture.large}
-              alt="Profile image"
-            />
-            <div
-              style={{
-                display: 'inline-block',
-                padding: '8px 24px',
-                position: 'absolute',
-                top: 0,
-              }}
-            >
+        {data && (
+          <ProfileContainer>
+            <Img src={data.picture.large} alt="Profile image" />
+            <ProfileContent>
               <h1>
-                {name.first} {name.last}
+                {data.name.first} {data.name.last}
               </h1>
-              <p>{dob.age} years old</p>
+              <p>{data.dob.age} years old</p>
               <p>
-                {location.city} {location.state}, {location.country}
+                {data.location.city} {data.location.state}, {data.location.country}
               </p>
               <p>Bio: {bioContent}</p>
               <button disabled>Message user!</button>
-            </div>
-          </div>
+            </ProfileContent>
+          </ProfileContainer>
         )}
+        {!data && <p>Error: Please return home to search for more profiles</p>}
       </>
     );
   }

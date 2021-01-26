@@ -10,11 +10,12 @@ import './styles.css';
 function App() {
   const PROFILES_URL =
     'https://randomuser.me/api/?results=12&nat=us,&inc=name,location,dob,id,picture&noinfo';
+  const REFRESH_INTERVAL = 10; // In seconds
   const [autoRefresh, setAutoRefresh] = useState(false);
-  const [count, setCount] = useState(10);
+  const [count, setCount] = useState(REFRESH_INTERVAL);
   const [data, setData] = useState([]);
   const [status, setStatus] = useState('');
-  const [userProfile, setUserProfile] = useState({});
+  const [userProfile, setUserProfile] = useState(null);
 
   const fetchData = async () => {
     setStatus('LOADING');
@@ -41,25 +42,28 @@ function App() {
         setCount(count - 1);
       } else {
         fetchData();
-        setCount(10);
+        setCount(REFRESH_INTERVAL);
       }
     },
     autoRefresh ? 1000 : null
   );
 
+  // Toggles the autoRefresh state to true/false based on the switch in the SearchPage
+  // If autoRefresh is false we stop the timer and reset the counter to 10 seconds
   const handleRefreshState = useCallback((value) => {
     setAutoRefresh(value);
-    setCount(10); // Reset timer
+    setCount(REFRESH_INTERVAL);
   });
 
+  // Sets the userProfile state based on the profile card that is clicked in the SearchPage
   const handleOpenProfile = (profileData) => {
     setUserProfile(profileData);
   };
 
   return (
     <>
-      {status === 'ERROR' && <div>{'Something went wrong ...'}</div>}
-      {status === 'LOADING' && <div>{'Loading profiles ...'}</div>}
+      {status === 'ERROR' && <h3>{'Error: Could not retrieve profile data'}</h3>}
+      {status === 'LOADING' && <p>{'Loading profiles ...'}</p>}
       {status === 'LOADED' && (
         <ProfilesContextProvider profileData={data}>
           <Router>

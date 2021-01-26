@@ -1,19 +1,87 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 
-const styles = {
-  card: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  avatar: {
-    cursor: 'pointer',
-    position: 'relative',
-    width: '200px',
-    height: '200px',
-  },
-};
+// Note - We could also pull these styles out into a seperate file
+// and then export them in for usage, depending on our perference.
+const Avatar = styled.div`
+  cursor: pointer;
+  position: relative;
+  width: 200px;
+  height: 200px;
+`;
+
+const AvatarContent = styled.div`
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  border-radius: inherit;
+  overflow: hidden;
+`;
+
+const BottomRow = styled.div`
+  display: flex,
+  justify-content: space-between;
+  align-items: baseline;
+`;
+
+const Card = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const CardShadow = styled.div`
+  border: 1px solid lightgray;
+  border-radius: 8px;
+  box-shadow: 0 3px 6px lightgray, 0 3px 6px;
+  overflow: hidden;
+`;
+
+const ContentLayout = styled.div`
+  margin: 8px;
+  display: flex;
+  justifuy-content: space-between;
+  align-items: flex-end;
+  position: relative;
+`;
+
+const ContentStyle = styled.div`
+  color: white;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+`;
+
+const LeftContent = styled.div`
+  display: flex;
+  margin-bottom: 4px;
+  align-items: center;
+`;
+
+const Img = styled.img`
+  height: 200px;
+  width: 200px;
+`;
+
+const Name = styled.h6`
+  font-size: 16px;
+`;
+
+const NameLayout = styled.div`
+  display: flex;
+  margin-bottom: 4px;
+  align-items: center;
+`;
+
+const PhotoCount = styled.div`
+  margin-right: 4px;
+`;
+
+const RightContent = styled.div`
+  display: inline-block;
+  height: 15px;
+`;
 
 export default class Search extends React.PureComponent {
   render() {
@@ -27,89 +95,36 @@ export default class Search extends React.PureComponent {
     } = this.props;
 
     return (
-      <div style={styles.card}>
-        <div
-          style={{
-            border: '1px solid lightgray',
-            borderRadius: 8,
-            boxShadow: '0 3px 6px lightgray, 0 3px 6px',
-            overflow: 'hidden',
-          }}
-        >
+      <Card>
+        <CardShadow>
           <Link to="/profile">
-            <div style={styles.avatar} onClick={openProfile}>
-              <img
-                style={{
-                  height: '200px',
-                  width: '200px',
-                }}
-                src={photoUrl}
-                alt="potential date"
-              />
-              <div
-                style={{
-                  position: 'absolute',
-                  width: '100%',
-                  bottom: '0',
-                  borderRadius: 'inherit',
-                  overflow: 'hidden',
-                }}
-              >
-                <div
-                  style={{
-                    margin: 8,
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'flex-end',
-                    position: 'relative',
-                  }}
-                >
-                  <div
-                    style={{
-                      color: 'white',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      width: '100%',
-                    }}
-                  >
-                    <h6 style={{ fontSize: '16px ' }}>
-                      <div style={{ display: 'flex', marginBottom: '4px', alignItems: 'center' }}>
-                        {handle}
-                      </div>
-                    </h6>
-                    <div
-                      style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'baseline',
-                      }}
-                    >
-                      <div
-                        style={{
-                          display: 'flex',
-                          marginBottom: '4px',
-                          alignItems: 'center',
-                        }}
-                      >
+            <Avatar onClick={openProfile}>
+              <Img src={photoUrl} alt="potential date" />
+              <AvatarContent>
+                <ContentLayout>
+                  <ContentStyle>
+                    <Name>
+                      <NameLayout>{handle}</NameLayout>
+                    </Name>
+                    <BottomRow>
+                      <LeftContent>
                         <span>{location ? `${age} • ${location}` : age}</span>
-                      </div>
-                      <div style={{ display: 'inline-block', height: '15px' }}>
+                      </LeftContent>
+                      <RightContent>
                         {photoCount > 1 && (
-                          <div>
-                            <div style={{ marginRight: '4px' }}>
-                              <span color="white">{photoCount}</span>
-                            </div>
-                          </div>
+                          <PhotoCount>
+                            <span color="white">{photoCount}</span>
+                          </PhotoCount>
                         )}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+                      </RightContent>
+                    </BottomRow>
+                  </ContentStyle>
+                </ContentLayout>
+              </AvatarContent>
+            </Avatar>
           </Link>
-        </div>
-      </div>
+        </CardShadow>
+      </Card>
     );
   }
 }
